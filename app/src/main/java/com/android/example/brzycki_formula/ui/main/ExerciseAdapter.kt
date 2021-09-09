@@ -1,15 +1,15 @@
 package com.android.example.brzycki_formula.ui.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.example.brzycki_formula.R
-import com.android.example.brzycki_formula.TextItemViewHolder
-import com.android.example.brzycki_formula.database.ExerciseIteration
+import com.android.example.brzycki_formula.database.Exercise
 
-class ExerciseAdapter : RecyclerView.Adapter<TextItemViewHolder>() {
-    var data = listOf<ExerciseIteration>()
+class ExerciseAdapter : RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {
+    var data = listOf<Exercise>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -17,17 +17,22 @@ class ExerciseAdapter : RecyclerView.Adapter<TextItemViewHolder>() {
 
     override fun getItemCount() = data.size
 
-    override fun onBindViewHolder(holder: TextItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-
-        holder.textView.text = item.exerciseName
+        holder.exerciseName.text = item.exerciseName
+        holder.exerciseMax.text = item.max.toString()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TextItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater
-            .inflate(R.layout.exercise_item_view, parent, false) as TextView
+            .inflate(R.layout.list_item_exercise, parent, false)
 
-        return TextItemViewHolder(view)
+        return ViewHolder(view)
+    }
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        val exerciseName: TextView = itemView.findViewById(R.id.exercise_name)
+        val exerciseMax: TextView = itemView.findViewById(R.id.exercise_max)
     }
 }

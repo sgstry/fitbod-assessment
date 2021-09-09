@@ -12,6 +12,9 @@ interface ExerciseDatabaseDao {
     @Insert
     suspend fun insertIteration(night: ExerciseIteration)
 
+    @Insert
+    suspend fun insertExercise(exercise: Exercise)
+
     @Update
     suspend fun updateIteration(night: ExerciseIteration)
 

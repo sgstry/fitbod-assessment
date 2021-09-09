@@ -9,14 +9,11 @@ data class ExerciseIteration(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L,
 
-    @ColumnInfo(name = "exercise_id")
-    var exerciseId: Long = 0L,
+    @ColumnInfo(name = "exercise_date")
+    var date: String = "",
 
     @ColumnInfo(name = "exercise_name")
     var exerciseName: String = "",
-
-    @ColumnInfo(name = "exercise_date")
-    var date: String = "",
 
     @ColumnInfo(name = "sets")
     var sets: Int = 0,
