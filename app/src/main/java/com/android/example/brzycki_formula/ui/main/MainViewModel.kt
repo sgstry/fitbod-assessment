@@ -12,6 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.InputStream
+import java.text.SimpleDateFormat
+import kotlin.math.roundToInt
 
 class MainViewModel(val database: ExerciseDatabaseDao,
                     application: Application) : AndroidViewModel(application) {
@@ -37,6 +39,7 @@ class MainViewModel(val database: ExerciseDatabaseDao,
             val lineList = mutableListOf<String>()
 
             inputStream.bufferedReader().useLines { lines -> lines.forEach { lineList.add(it)} }
+            val dateFormat = SimpleDateFormat("MMM dd yyyy")
             lineList.forEach {
                 val data = it.split(",")
                 val exerciseName = data[1]
@@ -45,7 +48,7 @@ class MainViewModel(val database: ExerciseDatabaseDao,
                 val oneRepMax = calculateOneRepMax(weight, reps)
 
                 val exerciseIteration = ExerciseIteration(
-                    date = data[0],
+                    date = dateFormat.parse(data[0]),
                     exerciseName = exerciseName,
                     sets = data[2].toInt(),
                     reps = data[3].toInt(),
@@ -57,7 +60,7 @@ class MainViewModel(val database: ExerciseDatabaseDao,
         }
 
     private fun calculateOneRepMax(weight: Int, reps: Int): Int {
-        return weight / ((37 / 36) - ((1 / 36) * reps))
+        return (weight.toDouble() * (36.0 / (37.0 - reps))).roundToInt()
     }
 
     private suspend fun clear() {

@@ -30,7 +30,7 @@ class ExerciseHistoryViewModel(val database: ExerciseDatabaseDao,
             _exerciseMax.value = value.value
         }
 
-    lateinit var exercises: List<ExerciseIteration>
+    var exercises: LiveData<List<ExerciseIteration>> = database.getIterationsByName(exerciseName)
 
     init {
         _exerciseName.value = exerciseName

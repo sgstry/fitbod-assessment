@@ -1,11 +1,11 @@
 package com.android.example.brzycki_formula.database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
+import java.util.*
 
 @Database(entities = [ExerciseIteration::class], version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class ExerciseDatabase : RoomDatabase() {
     abstract val exerciseDatabaseDao: ExerciseDatabaseDao
 
@@ -26,5 +26,17 @@ abstract class ExerciseDatabase : RoomDatabase() {
             }
 
         }
+    }
+}
+
+class Converters {
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? {
+        return value?.let { Date(it) }
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time?.toLong()
     }
 }
