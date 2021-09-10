@@ -17,17 +17,17 @@ class MainViewModel(val database: ExerciseDatabaseDao,
                     application: Application) : AndroidViewModel(application) {
 
     private val app = application
-    var exercises : LiveData<List<Exercise>>
+    var exercises : LiveData<List<Exercise>> = database.getExercises()
 
     init {
         instantiateDb()
-        exercises = database.getAllExercises()
     }
 
     private fun instantiateDb() {
         viewModelScope.launch {
             clear()
             readInExerciseData()
+            exercises = database.getExercises()
         }
     }
 
@@ -37,31 +37,22 @@ class MainViewModel(val database: ExerciseDatabaseDao,
             val lineList = mutableListOf<String>()
 
             inputStream.bufferedReader().useLines { lines -> lines.forEach { lineList.add(it)} }
-            val exerciseMap = mutableMapOf<String,Int>()
             lineList.forEach {
                 val data = it.split(",")
                 val exerciseName = data[1]
                 val reps: Int = data[3].toInt()
                 val weight : Int = data[4].toInt()
                 val oneRepMax = calculateOneRepMax(weight, reps)
-                if (exerciseMap.contains(exerciseName) && oneRepMax > exerciseMap[exerciseName]!!) {
-                    exerciseMap[exerciseName] = oneRepMax
-                } else if(!exerciseMap.contains(exerciseName)){
-                    exerciseMap[exerciseName] = oneRepMax
-                }
 
                 val exerciseIteration = ExerciseIteration(
                     date = data[0],
                     exerciseName = exerciseName,
                     sets = data[2].toInt(),
                     reps = data[3].toInt(),
-                    weight = weight
+                    weight = weight,
+                    max = oneRepMax
                 )
                 insertIteration(exerciseIteration)
-            }
-            exerciseMap.forEach {
-                val exercise = Exercise(exerciseName = it.key, max = it.value)
-                insertExercise(exercise)
             }
         }
 
@@ -71,14 +62,9 @@ class MainViewModel(val database: ExerciseDatabaseDao,
 
     private suspend fun clear() {
         database.clearIterations()
-        database.clearExercises()
     }
 
     private suspend fun insertIteration(newExerciseIteration: ExerciseIteration) {
         database.insertIteration(newExerciseIteration)
-    }
-
-    private suspend fun insertExercise(newExercise: Exercise) {
-        database.insertExercise(newExercise)
     }
 }

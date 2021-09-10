@@ -4,7 +4,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.android.example.brzycki_formula.ExerciseHistoryActivity
 import com.android.example.brzycki_formula.database.Exercise
@@ -16,7 +15,6 @@ class ExerciseAdapter() : RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {
             field = value
             notifyDataSetChanged()
         }
-
 
 
     override fun getItemCount() = data.size

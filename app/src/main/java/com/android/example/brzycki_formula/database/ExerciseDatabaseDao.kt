@@ -12,9 +12,6 @@ interface ExerciseDatabaseDao {
     @Insert
     suspend fun insertIteration(night: ExerciseIteration)
 
-    @Insert
-    suspend fun insertExercise(exercise: Exercise)
-
     @Update
     suspend fun updateIteration(night: ExerciseIteration)
 
@@ -24,17 +21,14 @@ interface ExerciseDatabaseDao {
     @Query("DELETE FROM exercise_iteration_table")
     suspend fun clearIterations()
 
-    @Query("DELETE FROM exercise_table")
-    suspend fun clearExercises()
-
     @Query("SELECT * FROM exercise_iteration_table ORDER BY id DESC")
     fun getAllIterations(): List<ExerciseIteration>
 
     @Query("SELECT * FROM exercise_iteration_table WHERE exercise_name = :name ORDER BY exercise_date ASC")
-    fun getIterationsByName(name: String): List<ExerciseIteration>
+    suspend fun getIterationsByName(name: String): List<ExerciseIteration>
 
-    @Query("SELECT * FROM exercise_table ORDER BY exerciseId DESC")
-    fun getAllExercises(): LiveData<List<Exercise>>
+    @Query("SELECT exercise_name, max(max) as max FROM exercise_iteration_table GROUP BY exercise_name")
+    fun getExercises(): LiveData<List<Exercise>>
 
 
 }

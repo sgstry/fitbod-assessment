@@ -22,5 +22,8 @@ data class ExerciseIteration(
     var reps: Int = 0,
 
     @ColumnInfo(name = "weight")
-    var weight: Int = 0
+    var weight: Int = 0,
+
+    @ColumnInfo(name = "max")
+    var max: Int = 0
 )
