@@ -22,10 +22,16 @@ interface ExerciseDatabaseDao {
     suspend fun getIteration(key: Long) : ExerciseIteration?
 
     @Query("DELETE FROM exercise_iteration_table")
-    suspend fun clear()
+    suspend fun clearIterations()
+
+    @Query("DELETE FROM exercise_table")
+    suspend fun clearExercises()
 
     @Query("SELECT * FROM exercise_iteration_table ORDER BY id DESC")
     fun getAllIterations(): List<ExerciseIteration>
+
+    @Query("SELECT * FROM exercise_iteration_table WHERE exercise_name = :name ORDER BY exercise_date ASC")
+    fun getIterationsByName(name: String): List<ExerciseIteration>
 
     @Query("SELECT * FROM exercise_table ORDER BY exerciseId DESC")
     fun getAllExercises(): LiveData<List<Exercise>>

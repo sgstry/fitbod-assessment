@@ -37,28 +37,41 @@ class MainViewModel(val database: ExerciseDatabaseDao,
             val lineList = mutableListOf<String>()
 
             inputStream.bufferedReader().useLines { lines -> lines.forEach { lineList.add(it)} }
-            val uniqueExercises = mutableListOf<String>()
+            val exerciseMap = mutableMapOf<String,Int>()
             lineList.forEach {
                 val data = it.split(",")
-                if (!uniqueExercises.contains(data[1])) {
-                    val exercise = Exercise(exerciseName = data[1])
-                    insertExercise(exercise)
-                    uniqueExercises.add(data[1])
+                val exerciseName = data[1]
+                val reps: Int = data[3].toInt()
+                val weight : Int = data[4].toInt()
+                val oneRepMax = calculateOneRepMax(weight, reps)
+                if (exerciseMap.contains(exerciseName) && oneRepMax > exerciseMap[exerciseName]!!) {
+                    exerciseMap[exerciseName] = oneRepMax
+                } else if(!exerciseMap.contains(exerciseName)){
+                    exerciseMap[exerciseName] = oneRepMax
                 }
 
                 val exerciseIteration = ExerciseIteration(
                     date = data[0],
-                    exerciseName = data[1],
+                    exerciseName = exerciseName,
                     sets = data[2].toInt(),
                     reps = data[3].toInt(),
-                    weight = data[4].toInt()
+                    weight = weight
                 )
                 insertIteration(exerciseIteration)
             }
+            exerciseMap.forEach {
+                val exercise = Exercise(exerciseName = it.key, max = it.value)
+                insertExercise(exercise)
+            }
         }
 
+    private fun calculateOneRepMax(weight: Int, reps: Int): Int {
+        return weight / ((37 / 36) - ((1 / 36) * reps))
+    }
+
     private suspend fun clear() {
-        database.clear()
+        database.clearIterations()
+        database.clearExercises()
     }
 
     private suspend fun insertIteration(newExerciseIteration: ExerciseIteration) {

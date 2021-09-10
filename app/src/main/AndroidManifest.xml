@@ -10,8 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BrzyckiFormula">
         <activity
+            android:name=".ExerciseHistoryActivity"
+            android:exported="true"/>
+        <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/mainLabel">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

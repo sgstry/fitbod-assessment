@@ -5,60 +5,65 @@
 
     <data>
         <variable
-            name="exercise"
-            type="com.android.example.brzycki_formula.database.Exercise"/>
+            name="historyViewModel"
+            type="com.android.example.brzycki_formula.ui.main.ExerciseHistoryViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/exercise_history"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        tools:context=".ui.main.ExerciseHistoryFragment">
 
         <TextView
             android:id="@+id/exercise_name"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textSize="24sp"
+            android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:textSize="18sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Barbell Bench Press" />
+            tools:text="Barbell Bench Press"/>
 
         <TextView
             android:id="@+id/exercise_max"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textSize="24sp"
+            android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:textSize="18sp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="215" />
+            tools:text="215"/>
 
         <TextView
-            android:id="@+id/rm_record"
+            android:id="@+id/max_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/exercise_name"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:text="@string/_1_rm_record" />
+            android:text="@string/_1_rm_record"
+            tools:text="@string/_1_rm_record"/>
 
         <TextView
-            android:id="@+id/weight_unit"
+            android:id="@+id/pounds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/exercise_max"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:text="@string/lbs" />
+            android:text="@string/lbs"
+            tools:text="lbs"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
