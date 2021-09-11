@@ -182,7 +182,7 @@ Jun 30 2020,Back Squat,1,6,240
 Jun 30 2020,Back Squat,1,6,240
 Jun 30 2020,Back Squat,1,6,240
 Jun 30 2020,Back Squat,1,6,240
-Jun 19 2020,Deadlift,1,1,360
+Jun 19 2020,Deadlift,1,2,360
 Jun 15 2020,Deadlift,1,10,45
 Jun 15 2020,Deadlift,1,10,135
 Jun 15 2020,Deadlift,1,5,205

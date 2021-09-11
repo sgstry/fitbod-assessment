@@ -1,17 +1,19 @@
 package com.android.example.brzycki_formula.ui.main
 
 import android.app.Application
+import android.content.SharedPreferences
+import android.preference.PreferenceManager.getDefaultSharedPreferences
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.android.example.brzycki_formula.R
+import com.android.example.brzycki_formula.Util
 import com.android.example.brzycki_formula.database.Exercise
 import com.android.example.brzycki_formula.database.ExerciseDatabaseDao
 import com.android.example.brzycki_formula.database.ExerciseIteration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.InputStream
 import java.text.SimpleDateFormat
 import kotlin.math.roundToInt
 
@@ -20,27 +22,39 @@ class MainViewModel(val database: ExerciseDatabaseDao,
 
     private val app = application
     var exercises : LiveData<List<Exercise>> = database.getExercises()
+    private val hashPref = app.getString(R.string.data_hash)
+    val prefs: SharedPreferences = getDefaultSharedPreferences(app)
 
     init {
         instantiateDb()
     }
 
     private fun instantiateDb() {
+        val hash = prefs.getString(hashPref, "")
+        val fileAsString = Util.getFileAsString(app)
+        var newHash = Util.getFileChecksum(fileAsString)
+        var readInToDb = false
+        if (hash == "" || hash != newHash) {
+            readInToDb = true
+            val editor = prefs.edit()
+            editor.putString(hashPref, newHash)
+            editor.apply()
+        }
+
+        val lines = fileAsString.lines()
         viewModelScope.launch {
-            clear()
-            readInExerciseData()
+            if (readInToDb) {
+                clear()
+                readInExerciseData(lines)
+            }
             exercises = database.getExercises()
         }
     }
 
-    private suspend fun readInExerciseData() =
+    private suspend fun readInExerciseData(input: List<String>) =
         withContext(Dispatchers.IO) {
-            val inputStream: InputStream = app.resources.openRawResource(R.raw.workoutdata)
-            val lineList = mutableListOf<String>()
-
-            inputStream.bufferedReader().useLines { lines -> lines.forEach { lineList.add(it)} }
             val dateFormat = SimpleDateFormat("MMM dd yyyy")
-            lineList.forEach {
+            input.forEach {
                 val data = it.split(",")
                 val exerciseName = data[1]
                 val reps: Int = data[3].toInt()

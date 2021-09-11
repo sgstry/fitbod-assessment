@@ -3,4 +3,5 @@
     <string name="_1_rm_record">1 RM Record</string>
     <string name="lbs">lbs</string>
     <string name="mainLabel">Exercises</string>
+    <string name="data_hash">workoutDataHash</string>
 </resources>
