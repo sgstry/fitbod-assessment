@@ -25,7 +25,7 @@ class ExerciseAdapter() : RecyclerView.Adapter<ExerciseAdapter.ViewHolder>() {
         holder.exerciseMax.text = item.max.toString()
 
         holder.itemView.setOnClickListener {
-            val context = holder.itemView.context.applicationContext
+            val context = holder.itemView.context
             val historyActivityIntent = Intent(
                 context,
                 ExerciseHistoryActivity::class.java).apply {
